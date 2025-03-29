@@ -1,21 +1,141 @@
 {% extends 'calculator/base.html' %}
 
 {% block content %}
-    <div>
-        <div>
-            <h1>
-                Calculator
-            </h1>
 
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
+    <style>
+        body {
+            background: linear-gradient(180deg, #16222A 0%, #3A6073 100%);
+            font-family: monospace, sans-serif;
+            font-weight: lighter;
+            color: aliceblue;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Diseño vertical para pantallas pequeñas */
+            height: 100vh; /* Altura completa de la ventana */
+            margin: 0;
+            padding: 20px; /* Espaciado interno */
+        }
 
-                <button type="submit">Calculate</button>
-            </form>
-            {% if result %}
-                <h2>Result: {{ result }}</h2>
-            {% endif %}
+        .form-container {
+            background-color: #ffffff09; /* Color del rectángulo */
+            padding: 60px; /* Espaciado interno */
+            border-radius: 40px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+            text-align: left; /* Alinear el contenido dentro del rectángulo */
+            max-width: 400px; /* Ancho máximo del formulario */
+            width: 100%; /* Ocupa el 100% del ancho disponible */
+            margin: 0 auto; /* Centrar horizontalmente */
+        }
+
+        h1 {
+            text-align: center;
+            font-family: monospace; /* Fuente del título */
+            font-size: 2rem; /* Tamaño del título */
+            margin-bottom: 30px; /* Espaciado debajo del título */
+            font-weight: lighter;
+        }
+
+        button {
+            background-color: #1d1d1d; /* Color del botón */
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: block; /* Asegura que el botón ocupe una línea completa */
+            margin-left: auto; /* Centrar horizontalmente */
+            margin-right: auto; /* Centrar horizontalmente */
+            font-size: 1.2rem; /* Tamaño del texto del botón */
+        }
+
+        button:hover {
+            background-color: #2e2e2e; /* Color del botón al pasar el mouse */
+        }
+
+        .logo {
+            position: absolute;
+            top: 50px; /* Distancia desde la parte superior */
+            left: 50px; /* Distancia desde la parte izquierda */
+            width: 100px; /* Ancho del logo */
+            height: auto; /* Mantener proporción */
+            border-radius: 40%; /* Bordes redondeados */
+        }
+
+        input, select, textarea {
+            background-color: rgba(255, 255, 255, 0.041); /* Fondo blanco */
+            color: rgb(255, 255, 255); /* Texto negro */
+            border: none; /* Borde gris */
+            border-radius: 5px; /* Bordes redondeados */
+            padding: 10px; /* Espaciado interno */
+            margin-bottom: 10px; /* Espaciado entre las cajas */
+            width: 100%; /* Ajustar al ancho del contenedor */
+            box-sizing: border-box; /* Incluir padding y borde en el ancho */
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none; /* Quitar el borde azul predeterminado */
+            border-color: #d06ce4; /* Cambiar el color del borde al enfocar */
+            box-shadow: 0 0 5px #7c7c7c; /* Agregar un efecto de sombra */
+        }
+
+        option {
+            background-color: #446f70; /* Fondo de las opciones desplegadas */
+            color: rgb(255, 255, 255); /* Color del texto de las opciones */
+        }
+
+        .result-container {
+            text-align: center; /* Centrar el texto del resultado */
+            margin-top: 20px; /* Espaciado superior */
+        }
+
+        .result-container h2 {
+            font-size: 1.5rem; /* Tamaño del texto del resultado */
+            color: aliceblue; /* Color del texto */
+            font-weight: lighter;
+        }
+
+        /* Media query para pantallas pequeñas */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px; /* Reducir el espaciado interno */
+            }
+
+            h1 {
+                font-size: 1.5rem; /* Reducir el tamaño del título */
+            }
+
+            button {
+                padding: 10px 20px; /* Reducir el tamaño del botón */
+                font-size: 1rem; /* Reducir el tamaño del texto del botón */
+            }
+  
+
+            .result-container h2 {
+                font-size: 1.2rem; /* Reducir el tamaño del texto del resultado */
+            }
+
+            
+        }
+    </style>
+
+    <div class="form-container">
+        <h1>
+            PhonkCalculator
+        </h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit">Transformar</button>
+        </form>
+        {% if result %}
+        <div class="result-container">
+            <h2>Resultado: {{ result }}</h2>
         </div>
+        {% endif %}
     </div>
+
 {% endblock content %}
