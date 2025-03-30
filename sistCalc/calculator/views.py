@@ -16,16 +16,16 @@ class index(View):
             n = len(str(number))-1
             i = 0
             digitos = [int(d) for d in str(number)]
-            resultado = ""
+            resultado = 0
             if origin_base == 'binary':
                 while i <= n:
                     operacion = digitos[i] * (2**(n-i))
-                    resultado+= str(operacion)
+                    resultado+= operacion
                     i+=1
             elif origin_base == 'octal':
                 while i <= n:
                     operacion = digitos[i] * (8**(n-i))
-                    resultado+= str(operacion)
+                    resultado+= operacion
                     i+=1
             elif origin_base == 'hexadecimal':
                 
@@ -44,10 +44,10 @@ class index(View):
                         elif digitos[i] == 'F':
                             digitos[i] = 15
                     operacion = digitos[i] * (16**(n-i))
-                    resultado+= str(operacion)
+                    resultado+= operacion
                     i+=1
 
-            resultado = int(resultado)
+            
             # aqui implementamos la logica si recibimos un numero con "," para transformar
             
 
@@ -129,8 +129,24 @@ class index(View):
                 #despues de decimal a la base que queremos
                 if conversion_type != 'decimal':
                     result = self.decimal_to_something(result, conversion_type)
+
+            elif origin_base == 'octal':
+                #primero debemos pasar de octal a decimal
+                result = self.something_to_decimal(number, origin_base)
+                #despues de decimal a la base que queremos
+                if conversion_type != 'decimal':
+                    result = self.decimal_to_something(result, conversion_type)
             
-            result = list(result)
+            elif origin_base == 'hexadecimal':
+                #primero debemos pasar de hexadecimal a decimal
+                result = self.something_to_decimal(number, origin_base)
+                #despues de decimal a la base que queremos
+                if conversion_type != 'decimal':
+                    result = self.decimal_to_something(result, conversion_type)
+            
+            if isinstance(result, int):
+                result = [result]
+
             result = ''.join(map(str, result))
 
             return render(request, 'calculator/index.html', {'form': form, 'result': result})
