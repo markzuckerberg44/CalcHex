@@ -2,7 +2,7 @@ from django import forms
 
 class transformationForm(forms.Form):
 
-    number = forms.DecimalField(label='Numero', max_digits=10, decimal_places=2)
+    number = forms.CharField()
 
     num_to_convert = forms.ChoiceField(
         label="Base de origen",

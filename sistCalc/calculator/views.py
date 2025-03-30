@@ -10,50 +10,52 @@ class index(View):
         return render(request, 'calculator/index.html', {'form': form})
 
     def something_to_decimal(self, number, origin_base):
-
-        #logica por si recibimos un numero entero a transformar
-        if number%1 == 0:
-            n = len(str(number))-1
-            i = 0
-            digitos = [int(d) for d in str(number)]
-            resultado = 0
+        number = str(number).upper()
+        n = len(number)-1
+        resultado = 0
+        if "." not in number:            
             if origin_base == 'binary':
-                while i <= n:
-                    operacion = digitos[i] * (2**(n-i))
-                    resultado+= operacion
-                    i+=1
+                for i, d in enumerate(number):
+                    operacion = int(d) * (2**(n-i))
+                    resultado += operacion
             elif origin_base == 'octal':
-                while i <= n:
-                    operacion = digitos[i] * (8**(n-i))
-                    resultado+= operacion
-                    i+=1
+                for i, d in enumerate(number):
+                    operacion = int(d) * (8**(n-i))
+                    resultado += operacion
             elif origin_base == 'hexadecimal':
-                
-                while i <= n:
-                    if type(digitos[i]) == str:
-                        if digitos[i] == 'A':
-                            digitos[i] = 10
-                        elif digitos[i] == 'B':
-                            digitos[i] = 11
-                        elif digitos[i] == 'C':
-                            digitos[i] = 12
-                        elif digitos[i] == 'D':
-                            digitos[i] = 13
-                        elif digitos[i] == 'E':
-                            digitos[i] = 14
-                        elif digitos[i] == 'F':
-                            digitos[i] = 15
-                    operacion = digitos[i] * (16**(n-i))
-                    resultado+= operacion
-                    i+=1
-
-            
-            # aqui implementamos la logica si recibimos un numero con "," para transformar
-            
-
+                hex_map = {'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15}
+                for i, d in enumerate(number):
+                    if d in hex_map:
+                        digito = hex_map[d]
+                    else:
+                        digito = int(d)
+                    operacion = digito * (16**(n-i))
+                    resultado += operacion
+        else:
+            number_parts = number.split('.')
+            parte_entera = number_parts[0]
+            parte_fraccion = number_parts[1]
+            resultado += self.something_to_decimal(parte_entera, origin_base)
+            if origin_base == 'binary':
+                for i, d in enumerate(parte_fraccion):
+                    operacion = int(d) * (2**-(i+1))
+                    resultado += operacion
+            elif origin_base == 'octal':
+                for i, d in enumerate(parte_fraccion):
+                    operacion = int(d) * (8**-(i+1))
+                    resultado += operacion
+            elif origin_base == 'hexadecimal':
+                hex_map = {'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15}
+                for i, d in enumerate(parte_fraccion):
+                    if d in hex_map:
+                        digito = hex_map[d]
+                    else:
+                        digito = int(d)
+                    operacion = digito * (16**-(i+1))
+                    resultado += operacion
         return resultado
 
-                
+         
         
 
     def decimal_to_something(self, number, conversion_type):
@@ -147,7 +149,7 @@ class index(View):
             if isinstance(result, int):
                 result = [result]
 
-            result = ''.join(map(str, result))
+            result = str(result)
 
             return render(request, 'calculator/index.html', {'form': form, 'result': result})
     
