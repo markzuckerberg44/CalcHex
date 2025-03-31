@@ -1,4 +1,4 @@
-Como hostear:
+    Como hostear:
 
 1. estar en la carpeta "sistCalc" -> cd sistCalc
 2. comenzar el local host -> python manage.py runserver
