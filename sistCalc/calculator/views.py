@@ -152,7 +152,7 @@ class index(View):
                     if parte_fraccion == 0:
                         break
                     valores_vistos.add(parte_fraccion)
-        return result        
+        return result      
  
     def post(self, request):
         form = transformationForm(request.POST)
@@ -190,7 +190,10 @@ class index(View):
                 if conversion_type != 'decimal':
                     result = self.decimal_to_something(result, conversion_type)
 
-            result = str(result)
+            if isinstance(result, list):
+                result = ''.join(map(str, result))
+            else:
+                result = str(result)
 
             return render(request, 'calculator/index.html', {'form': form, 'result': result})
     
