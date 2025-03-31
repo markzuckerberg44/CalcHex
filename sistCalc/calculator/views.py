@@ -55,15 +55,11 @@ class index(View):
                     resultado += operacion
         return resultado
 
-         
-        
-
     def decimal_to_something(self, number, conversion_type):
         lista = []
+        number = int(number)
         result = ''
         if number % 1 == 0:
-            number = int(number)
-            
             if conversion_type == "binary":
                 #loop
                 while number > 0:
