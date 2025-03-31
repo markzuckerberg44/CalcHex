@@ -104,7 +104,7 @@ class index(View):
         else:
             number_parts = number.split('.')
             parte_entera = number_parts[0]
-            parte_fraccion = int(number_parts[1])
+            parte_fraccion = float("0." + number_parts[1])
             entero = -1
             precision = 0
 
@@ -113,41 +113,45 @@ class index(View):
             
             result = self.decimal_to_something(parte_entera, conversion_type)
             result.append(".")
+            valores_vistos = set()
 
             if conversion_type == "binary":
-                while entero != 0:
+                while entero != 0 and precision < 10:
                     while parte_fraccion < 1:
                         parte_fraccion *= 2
                     entero = int(parte_fraccion)
                     result.append(entero)
                     parte_fraccion -= entero
                     precision += 1
-                    if precision == 10:
+                    if parte_fraccion == 0:
                         break
+                    valores_vistos.add(parte_fraccion)
             elif conversion_type == "octal":
-                while entero != 0:
+                while entero != 0 and precision < 10:
                     while parte_fraccion < 1:
                         parte_fraccion *= 8
                     entero = int(parte_fraccion)
                     result.append(entero)
                     parte_fraccion -= entero
                     precision += 1
-                    if precision == 10:
+                    if parte_fraccion == 0:
                         break
+                    valores_vistos.add(parte_fraccion)
             elif conversion_type == "hexadecimal":
-                while entero != 0:
+                while entero != 0 and precision < 10:
                     while parte_fraccion < 1:
                         parte_fraccion *= 16
                     entero = int(parte_fraccion)
                     if entero > 9:
                         hex_map = {10: 'A', 11: 'B', 12: 'C', 13: 'D', 14: 'E', 15: 'F'}
-                        result.append(hex_map(entero))
+                        result.append(hex_map[entero])
                     else:
                         result.append(entero)
                     parte_fraccion -= entero
                     precision += 1
-                    if precision == 10:
+                    if parte_fraccion == 0:
                         break
+                    valores_vistos.add(parte_fraccion)
         return result        
  
     def post(self, request):
@@ -185,9 +189,6 @@ class index(View):
                 #despues de decimal a la base que queremos
                 if conversion_type != 'decimal':
                     result = self.decimal_to_something(result, conversion_type)
-            
-            if isinstance(result, int):
-                result = [result]
 
             result = str(result)
 
