@@ -56,10 +56,11 @@ class index(View):
         return resultado
 
     def decimal_to_something(self, number, conversion_type):
+        number = str(number).upper()
         lista = []
-        number = int(number)
         result = ''
-        if number % 1 == 0:
+        if '.' not in number:
+            number = int(number)
             if conversion_type == "binary":
                 #loop
                 while number > 0:
@@ -68,19 +69,15 @@ class index(View):
                     else:
                         lista.append(1)
                     number = number//2
-    
                 lista.reverse()
                 result = lista
             elif conversion_type == "octal":
-    
                 while number > 0:
                     resto = number % 8  # Calcula el resto de la división entre 8
                     lista.append(resto)  # Agrega el resto a la lista
                     number = number // 8  # Divide el número entre 8 (división entera)
-                       
                 lista.reverse()
                 result = lista
-    
             elif conversion_type == "hexadecimal":
                 while number > 0:
                     division = number/16
@@ -104,6 +101,53 @@ class index(View):
                     number = partEntera
                 lista.reverse()
                 result = lista
+        else:
+            number_parts = number.split('.')
+            parte_entera = number_parts[0]
+            parte_fraccion = int(number_parts[1])
+            entero = -1
+            precision = 0
+
+            while parte_fraccion > 1:
+                parte_fraccion /= 10
+            
+            result = self.decimal_to_something(parte_entera, conversion_type)
+            result.append(".")
+
+            if conversion_type == "binary":
+                while entero != 0:
+                    while parte_fraccion < 1:
+                        parte_fraccion *= 2
+                    entero = int(parte_fraccion)
+                    result.append(entero)
+                    parte_fraccion -= entero
+                    precision += 1
+                    if precision == 10:
+                        break
+            elif conversion_type == "octal":
+                while entero != 0:
+                    while parte_fraccion < 1:
+                        parte_fraccion *= 8
+                    entero = int(parte_fraccion)
+                    result.append(entero)
+                    parte_fraccion -= entero
+                    precision += 1
+                    if precision == 10:
+                        break
+            elif conversion_type == "hexadecimal":
+                while entero != 0:
+                    while parte_fraccion < 1:
+                        parte_fraccion *= 16
+                    entero = int(parte_fraccion)
+                    if entero > 9:
+                        hex_map = {10: 'A', 11: 'B', 12: 'C', 13: 'D', 14: 'E', 15: 'F'}
+                        result.append(hex_map(entero))
+                    else:
+                        result.append(entero)
+                    parte_fraccion -= entero
+                    precision += 1
+                    if precision == 10:
+                        break
         return result        
  
     def post(self, request):
