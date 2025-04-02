@@ -170,6 +170,11 @@ class index(View):
                 result = self.decimal_to_something(number, conversion_type)
 
             elif origin_base == 'binary':
+                #debemos chequear si el numero es binario
+                for i in number:
+                    if i not in ['0', '1']:
+                        return render(request, 'calculator/index.html', {'form': form, 'result': 'Error: El número no es binario.'})
+
                 #primero debemos pasar de binario a decimal
                 result = self.something_to_decimal(number, origin_base)
                 #despues de decimal a la base que queremos
