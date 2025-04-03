@@ -1,5 +1,10 @@
-Hosting paso a paso:
-
-1. Estar en la carpeta "sistCalc" -> cd sistCalc
-2. Comenzar el local host -> python manage.py runserver
-3. Click en el link del local host para ser redirigido a la pagina principal
+Local-Hosting paso a paso:
+1. setear tu virtual enviroment:
+  Los siguientes comandos en la terminal deberian setearlo:
+    python -m venv djangoenv
+    djangoenv\Scripts\activate
+    pip install django
+    pip install -r requirements.txt
+2. Estar en la carpeta "sistCalc" -> cd sistCalc
+3. Comenzar el local host -> python manage.py runserver
+4. Click en el link del local host para ser redirigido a la pagina principal
