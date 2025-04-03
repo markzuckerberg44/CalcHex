@@ -1,5 +1,5 @@
-    Como hostear:
+Hosting paso a paso:
 
-1. estar en la carpeta "sistCalc" -> cd sistCalc
-2. comenzar el local host -> python manage.py runserver
-3. click en el link del local host y seras redirigido a la pagina principal
+1. Estar en la carpeta "sistCalc" -> cd sistCalc
+2. Comenzar el local host -> python manage.py runserver
+3. Click en el link del local host para ser redirigido a la pagina principal
